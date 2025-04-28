@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana do Milhão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .bg-gradient-custom {
+            background-image: linear-gradient(to bottom, #003366, #336699); /* Azul escuro para azul médio */
+        }
+        .text-yellow-300 {
+            color: #F5D76E; /* Amarelo mais claro */
+        }
+        .bg-yellow-500 {
+            background-color: #FFD700; /* Amarelo ouro */
+        }
+        .hover\:bg-yellow-600:hover {
+            background-color: #FFC300; /* Amarelo mais escuro no hover */
+        }
+        .text-green-400 {
+            color: #82E0AA; /* Verde claro */
+        }
+        .bg-green-500\/20 {
+            background-color: rgba(130, 224, 170, 0.2); /* Verde claro com opacidade */
+        }
+        .text-green-400 {
+            color: #82E0AA;
+        }
+        .border-green-500\/30{
+             border-color: rgba(130, 224, 170, 0.3);
+        }
+        .bg-red-500\/20 {
+            background-color: rgba(240, 128, 128, 0.2); /* Vermelho claro com opacidade */
+        }
+        .text-red-400 {
+            color: #F08080;
+        }
+         .border-red-500\/30{
+             border-color: rgba(240, 128, 128, 0.3);
+        }
+
+        .text-black{
+            color: black;
+        }
+
+        #gif-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 100px; /* Ajuste o tamanho conforme necessário */
+            height: auto;
+        }
+
+        .bg-white\/10{
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .bg-white\/20{
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .bg-white\/30{
+             background-color: rgba(255, 255, 255, 0.3);
+        }
+
+    </style>
+</head>
+<body class="bg-gradient-custom text-white flex flex-col items-center justify-start min-h-screen py-8">
+    <div class="container flex flex-col md:flex-row items-start justify-center w-full max-w-7xl mx-auto px-4">
+        <div class="logo-container md:w-1/3 flex items-start justify-start mb-8 mr-8 md:mb-0">
+            <div class="logo bg-yellow-500 text-black rounded-lg p-6 text-center shadow-lg">
+                <img src="logo.png">
+            </div>
+        </div>
+
+        <div class="perguntas-container md:w-2/3 space-y-6">
+            <div id="pergunta-atual" class="bg-white/10 backdrop-blur-md rounded-lg p-6 shadow-lg border border-white/20">
+                <h2 class="text-2xl font-semibold mb-4 text-yellow-300">Pergunta</h2>
+                <p id="enunciado" class="text-lg mb-6">Enunciado da pergunta aqui...</p>
+                <div id="alternativas" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    </div>
+                <div id="feedback" class="mt-6 p-4 rounded-md text-center font-semibold hidden">
+                    </div>
+            </div>
+
+            <div id="pontuacao" class="bg-white/10 backdrop-blur-md rounded-lg p-4 shadow-md border border-white/20 text-right">
+                <span class="text-xl font-bold text-green-400">Pontuação: <span id="pontos">0</span> Milhos</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="gif-container">
+        <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeDY2ZzNlczFsNnNpeG92aHVndGhrZjRsa3czajVxZjVkMzI2OHhyZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/jUv2mkLN4hhKLCPckY/giphy.gif" alt="GIF Rodapé Direito" style="width: 100%; height: auto;">
+    </div>
+
+    <script>
+        const perguntas = [
+            {
+                "pergunta": "Qual a capital do Brasil?",
+                "alternativas": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+                "resposta": 2
+            },
+            {
+                "pergunta": "Quem pintou a Mona Lisa?",
+                "alternativas": ["Michelangelo", "Leonardo da Vinci", "Rafael", "Van Gogh"],
+                "resposta": 1
+            },
+             {
+                "pergunta": "Qual é o maior planeta do Sistema Solar?",
+                "alternativas": ["Marte", "Vênus", "Júpiter", "Saturno"],
+                "resposta": 2
+            },
+            {
+                "pergunta": "Qual o rio mais extenso do mundo?",
+                "alternativas": ["Nilo", "Amazonas", "Yangtzé", "Mississippi"],
+                "resposta": 1
+            },
+            {
+                "pergunta": "Qual é o símbolo químico da água?",
+                "alternativas": ["Wo", "Wa", "H2O", "HO2"],
+                "resposta": 2
+            },
+            {
+                "pergunta": "Quem foi o primeiro homem a pisar na Lua?",
+                "alternativas": ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "Alan Shepard"],
+                "resposta": 1
+            },
+            {
+                "pergunta": "Qual é o menor país do mundo?",
+                "alternativas": ["Mônaco", "Nauru", "Vaticano", "San Marino"],
+                "resposta": 2
+            },
+            {
+                "pergunta": "Qual o oceano mais profundo?",
+                "alternativas": ["Atlântico", "Índico", "Ártico", "Pacífico"],
+                "resposta": 3
+            },
+            {
+                "pergunta": "Qual é a montanha mais alta do mundo?",
+                "alternativas": ["K2", "Kangchenjunga", "Monte Everest", "Lhotse"],
+                "resposta": 2
+            },
+            {
+                "pergunta": "Qual é o animal terrestre mais rápido?",
+                "alternativas": ["Leão", "Tigre", "Guepardo", "Cavalo"],
+                "resposta": 3
+            }
+        ];
+
+        const perguntaAtualElement = document.getElementById('pergunta-atual');
+        const enunciadoElement = document.getElementById('enunciado');
+        const alternativasElement = document.getElementById('alternativas');
+        const feedbackElement = document.getElementById('feedback');
+        const pontosElement = document.getElementById('pontos');
+        const btnProximaPergunta = document.createElement('button');
+        btnProximaPergunta.textContent = 'Próxima Pergunta';
+        btnProximaPergunta.className = "bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-md shadow-md transition duration-300 ease-in-out mt-6";
+        btnProximaPergunta.style.display = 'none';
+        perguntaAtualElement.appendChild(btnProximaPergunta);
+
+
+        let perguntaAtualIndex = 0;
+        let pontuacao = 0;
+        let jogoFinalizado = false;
+
+        function playSound(url) {
+            const audio = new Audio(url);
+            audio.play();
+        }
+
+        function exibirPergunta() {
+            if (perguntaAtualIndex >= perguntas.length) {
+                finalizarJogo();
+                return;
+            }
+
+            const pergunta = perguntas[perguntaAtualIndex];
+            enunciadoElement.textContent = pergunta.pergunta;
+            alternativasElement.innerHTML = ''; // Limpa as alternativas anteriores
+            feedbackElement.className = "mt-6 p-4 rounded-md text-center font-semibold hidden"; // Reinicia o feedback
+
+            pergunta.alternativas.forEach((alternativa, index) => {
+                const button = document.createElement('button');
+                button.textContent = alternativa;
+                button.className = "bg-white/20 hover:bg-white/30 text-white font-semibold rounded-md py-3 px-4 shadow-md transition duration-300 ease-in-out";
+                button.dataset.opcao = index;
+                button.addEventListener('click', verificarResposta);
+                alternativasElement.appendChild(button);
+            });
+            btnProximaPergunta.style.display = 'none'; // Esconde o botão "Próxima Pergunta"
+            playSound('https://www.myinstants.com/media/sounds/perguntashowdomilhao.mp3');
+        }
+
+
+        function verificarResposta(event) {
+            if (jogoFinalizado) return;
+
+            const opcaoSelecionada = parseInt(event.target.dataset.opcao);
+            const respostaCorreta = perguntas[perguntaAtualIndex].resposta;
+
+            if (opcaoSelecionada === respostaCorreta) {
+                pontuacao += 1000;
+                pontosElement.textContent = pontuacao;
+                feedbackElement.textContent = 'Resposta Correta! 🎉';
+                feedbackElement.classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/30');
+                feedbackElement.classList.add('bg-green-500/20', 'text-green-400', 'border-green-500/30');
+                feedbackElement.classList.remove('hidden');
+                playSound('https://www.myinstants.com/media/sounds/certa-resposta-show-do-milhao.mp3');
+
+                if (perguntaAtualIndex < perguntas.length - 1) {
+                    btnProximaPergunta.style.display = 'block'; // Mostra o botão "Próxima Pergunta"
+                } else {
+                    finalizarJogo(); // Se for a última pergunta, finaliza o jogo
+                }
+
+
+            } else {
+                feedbackElement.textContent = 'Resposta Incorreta! 😢';
+                feedbackElement.classList.remove('bg-green-500/20', 'text-green-400', 'border-green-500/30');
+                feedbackElement.classList.add('bg-red-500/20', 'text-red-400', 'border-red-500/30');
+                feedbackElement.classList.remove('hidden');
+                playSound('https://www.myinstants.com/media/sounds/errou-show-do-milhao.mp3');
+                finalizarJogo();
+            }
+
+            // Desabilita os botões de alternativa após a seleção
+            Array.from(alternativasElement.children).forEach(button => {
+                button.disabled = true;
+                button.classList.remove('hover:bg-white/30');
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+        function proximaPergunta() {
+            perguntaAtualIndex++;
+            exibirPergunta();
+        }
+
+        function finalizarJogo() {
+            jogoFinalizado = true;
+            enunciadoElement.textContent = 'Fim de Jogo!';
+            alternativasElement.innerHTML = '';
+            btnProximaPergunta.style.display = 'none';
+
+            const mensagemFinal = document.createElement('p');
+            mensagemFinal.className = "text-2xl font-semibold text-center mt-6";
+            if (perguntaAtualIndex >= perguntas.length || feedbackElement.textContent.includes('Incorreta')) {
+                 mensagemFinal.textContent = `Sua pontuação final é: ${pontuacao} Milhos. Obrigado por jogar!`;
+            } else {
+                 mensagemFinal.textContent = `Parabéns! Você venceu o Show do Milhão com ${pontuacao} Milhos! 🏆`;
+            }
+
+            perguntaAtualElement.appendChild(mensagemFinal);
+
+            // Adiciona botão para reiniciar o jogo
+            const btnReiniciar = document.createElement('button');
+            btnReiniciar.textContent = 'Jogar Novamente';
+            btnReiniciar.className = "bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md shadow-md transition duration-300 ease-in-out mt-8 self-center";
+            btnReiniciar.addEventListener('click', reiniciarJogo);
+            perguntaAtualElement.appendChild(btnReiniciar);
+        }
+
+        function reiniciarJogo() {
+            perguntaAtualIndex = 0;
+            pontuacao = 0;
+            jogoFinalizado = false;
+            pontosElement.textContent = pontuacao;
+            perguntaAtualElement.removeChild(perguntaAtualElement.lastChild); // Remove o botão de reiniciar
+            exibirPergunta();
+        }
+
+        btnProximaPergunta.addEventListener('click', proximaPergunta);
+
+        exibirPergunta(); // Inicia o jogo exibindo a primeira pergunta
+
+    </script>
+</body>
+</html>
